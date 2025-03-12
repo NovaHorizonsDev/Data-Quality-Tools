@@ -36,7 +36,7 @@ class MissingElements:
                 return []
 
 
-    def replaceMissingElements(self):
+    def replaceMissingElements(self,filler):
         with open(self.file_path, 'r') as data:
             dataFile = csv.reader(data)
 
@@ -44,7 +44,10 @@ class MissingElements:
             for row in rows:
                 for element in range(len(row)):
                     if row[element]=="":
-                        row[element]="NAE"
+                        if filler == "":
+                            row[element]="NAE"
+                        else:
+                            row[element]=filler
         data.close()
         with open(self.file_path, 'w',newline='') as data:
             dataEditor = csv.writer(data)
