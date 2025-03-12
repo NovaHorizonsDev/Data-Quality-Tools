@@ -15,6 +15,7 @@ class MissingElements:
             SystemError("File Not Found")
         file_ext = os.path.splitext(self.file_path)[1]
 
+
         if (file_ext not in ['.xlsx', '.xls', '.csv']):
             SystemError("FileType not Accepted")
 
