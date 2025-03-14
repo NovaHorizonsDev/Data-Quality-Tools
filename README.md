@@ -6,5 +6,3 @@ Current Methods: <br>
 2.) replaceMissingElements: fills empty elements with a custom entry (or "NAE" is none given).<br>
 3.) deleteEmptyElementRows: deletes rows with empty data. <be>
 
-
-Data set is thanks to Kaggle (for testing purposes)
