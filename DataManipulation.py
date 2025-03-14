@@ -56,6 +56,7 @@ class MissingElements:
         return None
 
 
+
     def deleteEmptyElementRows(self):
         rows_to_write= []
         with open(self.file_path, 'r') as data:
