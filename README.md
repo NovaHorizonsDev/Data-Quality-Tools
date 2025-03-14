@@ -1,4 +1,4 @@
-The goal of this project is to create alternitive .csv and Excel data tools. 
+The goal of this project is to create alternative .csv and Excel data tools. 
 
 <br>
 Current Methods: <br>
