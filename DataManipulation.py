@@ -1,5 +1,9 @@
 import os
 import csv
+
+from jinja2 import UndefinedError
+
+
 class MissingElements:
 
     def __init__(self, file):
@@ -88,3 +92,30 @@ class MissingElements:
         return None
 
 
+class FinanceBro:
+    def __init__(self):
+        pass
+    def PV(self, futureValue, discountRate=None, time = None):
+
+        if discountRate is None:
+            discountRate=.02
+        if time is None:
+            time=1
+        if discountRate == -1:
+           raise ZeroDivisionError("Discount Rate cannot be -1")
+        return (futureValue/ ((1+ discountRate) ** time))
+
+    def FV(self, presentValue, discountRate=None, time = None):
+        if discountRate is None:
+            discountRate=.02
+        if time is None:
+            time=1
+        if discountRate == -1 and time == 0:
+            raise ArithmeticError("No FV, discount cannot be -1 and time cannot be 0 at the same time")
+        return presentValue * ((1+discountRate)**time)
+
+    def SimpleDoubleTime(self, simple_interest_rate):
+
+        if simple_interest_rate ==0:
+            raise ZeroDivisionError("Rate cannot be 0. You will never double it.")
+        return 1/simple_interest_rate
