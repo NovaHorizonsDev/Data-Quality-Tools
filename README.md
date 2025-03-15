@@ -8,7 +8,7 @@ Current Methods: <br>
 
 <br>
 
-Data set is thanks to Kaggle (for testing purposes)
+
 
 3/14/2025: Update 1.2: The FinanceBro Update: 
 <br>
