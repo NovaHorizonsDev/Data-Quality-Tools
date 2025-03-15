@@ -105,6 +105,7 @@ class FinanceBro:
            raise ZeroDivisionError("Discount Rate cannot be -1")
         return (futureValue/ ((1+ discountRate) ** time))
 
+
     def FV(self, presentValue, discountRate=None, time = None):
         if discountRate is None:
             discountRate=.02
