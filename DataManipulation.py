@@ -1,7 +1,6 @@
 import os
 import csv
 
-from jinja2 import UndefinedError
 
 
 class MissingElements:
@@ -10,7 +9,7 @@ class MissingElements:
     
 
         self.file_path = file
-            if(self.file_path==None):
+        if(self.file_path==None):
             SystemError("File Not Found")
         file_ext = os.path.splitext(self.file_path)[1]
 
@@ -61,12 +60,30 @@ class MissingElements:
                         else:
                             row[element]=filler
         data.close()
+
         with open(self.file_path, 'w',newline='') as data:
             dataEditor = csv.writer(data)
             dataEditor.writerows(rows)
             data.close()
         return None
 
+    def CustomreplaceMissingElements(self):
+        with open(self.file_path, 'r') as data:
+            dataFile = csv.reader(data)
+
+            rows = list(dataFile)
+            for row in rows:
+                for element in range(len(row)):
+                    if row[element] == "":
+                        print(row)
+                        print("Enter replacement:")
+                        userInput = input()
+                        if userInput is None:
+                            print("Nothing Entered will put \"NAE\"")
+                            row[element] = "NAE"
+                        else:
+                            row[element] = userInput
+        data.close()
 
 
     def deleteEmptyElementRows(self):
@@ -92,7 +109,9 @@ class MissingElements:
         return None
 
 
-class FinanceBro:
+
+
+class FinanceAnthology:
     def __init__(self):
         pass
     def PV(self, futureValue, discountRate=None, time = None):
