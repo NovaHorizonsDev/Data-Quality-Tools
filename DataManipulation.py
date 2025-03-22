@@ -139,3 +139,32 @@ class FinanceAnthology:
         if simple_interest_rate ==0:
             raise ZeroDivisionError("Rate cannot be 0. You will never double it.")
         return 1/simple_interest_rate
+
+
+    def GrossProfit(self, netSales, COGS):
+        return netSales - COGS
+
+    def GrossProfitMargin(self, netSales, COGS):
+        if netSales == 0:
+            return ZeroDivisionError
+        return (netSales - COGS)/netSales
+
+    def EBIT_NetSales(self, netSales, COGS, operatingExpenses):
+        return netSales - COGS - operatingExpenses
+
+    def EBIT_GrossProfit(self, grossProfit, operatingExpenses):
+        return grossProfit - operatingExpenses
+
+    def NOPAT_EBIT(self, EBIT, tax_rate_decimal):
+        return EBIT*(1-tax_rate_decimal)
+
+    def NOPAT_GrossProfit(self, grossProfit,operatingExpenses, tax_rate_decimal):
+        return (grossProfit-operatingExpenses)*(1-tax_rate_decimal)
+
+    def FreeCashFlowNOPAT (self, change_in_Operating_capital,NOPAT):
+        return NOPAT - change_in_Operating_capital
+
+    def FreeCashFlowEBIT(self, change_in_Operating_capital,EBIT, tax_rate_decimal):
+        return (EBIT*(1-tax_rate_decimal))- change_in_Operating_capital
+
+
