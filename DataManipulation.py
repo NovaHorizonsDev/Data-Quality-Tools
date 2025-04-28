@@ -172,28 +172,20 @@ class FinanceAnthology:
     def FreeCashFlowEBIT(self, change_in_Operating_capital,EBIT, tax_rate_decimal):
         return (EBIT*(1-tax_rate_decimal))- change_in_Operating_capital
 
-    def GrossProfitBreakEven(self, gross_profit_margin_decimal, costs):
-        if (gross_profit_margin_decimal== 0):
-            return DivideByZero()
-        return costs/ gross_profit_margin_decimal
+    def ApproxNominalRealRate(self, inflation_rate, real_rate):
+        return inflation_rate + real_rate
 
-    def UnitCostsBreakEven(self, Unit_variable_costs, Price_per_unit,Total_fixed_costs ):
-        if (Unit_variable_costs == Price_per_unit):
-            return DivideByZero()
-        return Total_fixed_costs/(Price_per_unit-Unit_variable_costs)
-    def debtRatio(self, total_assets, total_liabilities):
-        if(total_liabilities==0):
-            return DivideByZero()
-        return total_assets/total_liabilities
+    def NominalRealRate(self, inflation_rate, real_rate):
+        return ((1+inflation_rate)*(1-real_rate))-1
 
-    def CurrentRatio(self, current_assets, current_liabilities):
-        if(current_liabilities==0):
-            return DivideByZero()
-        return current_assets/current_liabilities
-    def TimeInterestCoverageEBIT(self,EBIT, interest_due):
-        if (interest_due == 0):
-            return DivideByZero()
-        return EBIT/interest_due + " x "
-
+    def PremiumRequiredrateOfReturn(self, credit_premium, liquidity_premium, maturity_premium, inflation_rate=None, real_rate=None, Nominal_real_rate=None):
+        if inflation_rate & real_rate & Nominal_real_rate is None:
+            return ArithmeticError("Inflation rate, Real rate, and Nominal Real Rate cannot be all None")
+        elif inflation_rate & real_rate is None:
+            return Nominal_real_rate+ maturity_premium+credit_premium+liquidity_premium
+        elif Nominal_real_rate is None:
+            return self.NominalRealRate(inflation_rate, real_rate) +  maturity_premium+credit_premium+liquidity_premium
+        else:
+            return ArithmeticError
 
 
