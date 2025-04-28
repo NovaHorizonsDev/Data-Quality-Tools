@@ -10,15 +10,8 @@ Current Methods: <br>
 
 
 
-3/14/2025: Update 1.2: The Finance Anthology Update: 
+04/28/2025: Update 1.2: The Accounting and Finance Anthology Update: 
 <br>
 What's new: <br>
--Present Value function:  .PV(FutureValue, discountRate= None, time =None). The default discount rate is .02, and the default time is 1 year. <br>
-Note: discount rate != -1 otherwise a divide by zero error is raised. 
-<br>
--Future Value function: .FV(PresentValue, discountRate= None, time =None). The default discount rate is .02, and the default time is 1 year. <br>
-Note: discount rate != -1  and time != 0 at the same time otherwise an arithmetic error is raised. (You get 0 to the power of 0). <br>
-<br>Both are non-annuity. 
-<br>
--Simple Interest (non-Compounding) Doubling Time: .SimpleDoubleTime(simple_interest_rate). Entering 0 will raise a Divide by Zero Error. You will never double with 0 interest rate.
+More Accounting and Financial Tools!
 <br>
