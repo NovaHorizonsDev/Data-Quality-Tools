@@ -6,7 +6,6 @@ import csv
 class MissingElements:
 
     def __init__(self, file):
-    
 
         self.file_path = file
         if(self.file_path==None):
@@ -119,7 +118,9 @@ class MissingElements:
 class FinanceAnthology:
     def __init__(self):
         pass
-    def PV(self, futureValue, discountRate=None, time = None):
+
+    @staticmethod
+    def PV(futureValue, discountRate=None, time = None):
 
         if discountRate is None:
             discountRate=.02
@@ -129,8 +130,8 @@ class FinanceAnthology:
            raise ZeroDivisionError("Discount Rate cannot be -1")
         return (futureValue/ ((1+ discountRate) ** time))
 
-
-    def FV(self, presentValue, discountRate=None, time = None):
+    @staticmethod
+    def FV( presentValue, discountRate=None, time = None):
         if discountRate is None:
             discountRate=.02
         if time is None:
@@ -139,54 +140,112 @@ class FinanceAnthology:
             raise ArithmeticError("No FV, discount cannot be -1 and time cannot be 0 at the same time")
         return presentValue * ((1+discountRate)**time)
 
-    def SimpleDoubleTime(self, simple_interest_rate):
+    @staticmethod
+    def SimpleDoubleTime( simple_interest_rate):
 
         if simple_interest_rate ==0:
             raise ZeroDivisionError("Rate cannot be 0. You will never double it.")
         return 1/simple_interest_rate
 
-
-    def GrossProfit(self, netSales, COGS):
+    @staticmethod
+    def GrossProfit( netSales, COGS):
         return netSales - COGS
 
-    def GrossProfitMargin(self, netSales, COGS):
+    @staticmethod
+    def GrossProfitMargin( netSales, COGS):
         if netSales == 0:
             return ZeroDivisionError
         return (netSales - COGS)/netSales
 
-    def EBIT_NetSales(self, netSales, COGS, operatingExpenses):
+    @staticmethod
+    def EBIT_NetSales( netSales, COGS, operatingExpenses):
         return netSales - COGS - operatingExpenses
 
-    def EBIT_GrossProfit(self, grossProfit, operatingExpenses):
+    @staticmethod
+    def EBIT_GrossProfit( grossProfit, operatingExpenses):
         return grossProfit - operatingExpenses
 
-    def NOPAT_EBIT(self, EBIT, tax_rate_decimal):
+    @staticmethod
+    def NOPAT_EBIT( EBIT, tax_rate_decimal):
         return EBIT*(1-tax_rate_decimal)
 
-    def NOPAT_GrossProfit(self, grossProfit,operatingExpenses, tax_rate_decimal):
+    @staticmethod
+    def NOPAT_GrossProfit( grossProfit,operatingExpenses, tax_rate_decimal):
         return (grossProfit-operatingExpenses)*(1-tax_rate_decimal)
 
-    def FreeCashFlowNOPAT (self, change_in_Operating_capital,NOPAT):
+    @staticmethod
+    def FreeCashFlowNOPAT ( change_in_Operating_capital,NOPAT):
         return NOPAT - change_in_Operating_capital
 
-    def FreeCashFlowEBIT(self, change_in_Operating_capital,EBIT, tax_rate_decimal):
+    @staticmethod
+    def FreeCashFlowEBIT( change_in_Operating_capital,EBIT, tax_rate_decimal):
         return (EBIT*(1-tax_rate_decimal))- change_in_Operating_capital
 
-    def ApproxNominalRealRate(self, inflation_rate, real_rate):
+    @staticmethod
+    def ApproxNominalRealRate( inflation_rate, real_rate):
         return inflation_rate + real_rate
 
-    def NominalRealRate(self, inflation_rate, real_rate):
-        return ((1+inflation_rate)*(1-real_rate))-1
+    @staticmethod
+    def NominalRealRate( inflation_rate, real_rate):
+        return round(((1+inflation_rate)*(1-real_rate))-1,2)
 
-    def PremiumRequiredrateOfReturn(self, credit_premium, liquidity_premium, maturity_premium, inflation_rate=None, real_rate=None, Nominal_real_rate=None):
+    @staticmethod
+    def PremiumRequiredrateOfReturn( credit_premium, liquidity_premium, maturity_premium, inflation_rate=None, real_rate=None, Nominal_real_rate=None):
         if inflation_rate & real_rate & Nominal_real_rate is None:
             return ArithmeticError("Inflation rate, Real rate, and Nominal Real Rate cannot be all None")
         elif inflation_rate & real_rate is None:
             return Nominal_real_rate+ maturity_premium+credit_premium+liquidity_premium
         elif Nominal_real_rate is None:
-            return self.NominalRealRate(inflation_rate, real_rate) +  maturity_premium+credit_premium+liquidity_premium
+            return FinanceAnthology.NominalRealRate(inflation_rate, real_rate) +  maturity_premium+credit_premium+liquidity_premium
         else:
             return ArithmeticError
 
+    @staticmethod
+    def AfterTaxCashFlows(beforeTaxCashFlows:list[float],taxRate_decimal):
+        for i in range(len(beforeTaxCashFlows)):
+            beforeTaxCashFlows[i] = round(beforeTaxCashFlows[i]*(1-taxRate_decimal),2)
+        return beforeTaxCashFlows
+
+#cashflows are after tax
+    @staticmethod
+    def NPV( initial_investment, discount_rate, cashflows:list[float] ):
+        if discount_rate == -1:
+            return ZeroDivisionError("Discount Rate cannot be -1")
+        npv = -1 *initial_investment
+        for i in range(len(cashflows)):
+            npv += cashflows[i]/((1+discount_rate)**(i+1))
+        return round(npv,2)
+
+    @staticmethod
+    def PaybackPeriod(cashflows:list[float],initial_investment):
+        if initial_investment == 0:
+            return ZeroDivisionError("Initial Investment cannot be 0")
+        return (initial_investment/(1+cashflows[-1]))
+
+    @staticmethod
+    def ProfitabilityIndex(cashflows:list[float],initial_investment,discount_rate = None):
+        #Free Project?
+        if initial_investment == 0:
+            return ZeroDivisionError("Initial Investment cannot be 0")
+        #discount everything?
+        if discount_rate == -1:
+            return ZeroDivisionError("Discount Rate cannot be -1")
+
+        #this step assumes cashflows are already PV
+        if discount_rate is  None:
+            return sum(cashflows)/initial_investment
+        #if not PV
+        sumOfPVCashFlows =0
+        for i in range(len(cashflows)):
+            sumOfPVCashFlows += FinanceAnthology.PV(cashflows[i], discount_rate,i+1)
+        return sumOfPVCashFlows/initial_investment
 
 
+class FinancialStatements:
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def SimpleIncomeStatement(self, netSales, COGS, Operating_Expenses, ):
+        return (f"Revenue:{netSales}\\COGS:{COGS}\\Gross Profit:{netSales-COGS}\\"
+                f"Operating Expenses:{Operating_Expenses}")
