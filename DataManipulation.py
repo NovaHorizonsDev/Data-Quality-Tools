@@ -233,7 +233,28 @@ class FinanceAnthology:
             sumOfPVCashFlows += FinanceAnthology.PV(cashflows[i], discount_rate,i+1)
         return sumOfPVCashFlows/initial_investment
 
-#New Class Coming Soon
+
+    @staticmethod
+    def PV_Annuity_Ordinary(payment, discount_rate_decimal, time_years, number_compounded_annually: int = 1):
+        if (discount_rate_decimal, number_compounded_annually) in [(0, 0), (-1, 1), (1, -1), (-1, 0), (1, 0),(0,-1),(0,1)]:
+            raise ZeroDivisionError
+        return payment *(1 - (1 / ((1 + (discount_rate_decimal / number_compounded_annually)) ** (time_years * number_compounded_annually))) )/ (discount_rate_decimal / number_compounded_annually)
+    @staticmethod
+    def FV_Annuity_Ordinary(payment, discount_rate_decimal, time_years, number_compounded_annually: int = 1):
+        if (discount_rate_decimal == 0 or number_compounded_annually == 0):
+            raise ZeroDivisionError
+        return payment *    ((1+(discount_rate_decimal / number_compounded_annually))**(time_years * number_compounded_annually)-1)/ (discount_rate_decimal / number_compounded_annually)
+
+    @staticmethod
+    def PV_Annuity_Due(payment, discount_rate_decimal, time_years, number_compounded_annually: int = 1):
+        return FinanceAnthology.PV_Annuity_Ordinary(payment, discount_rate_decimal, time_years, number_compounded_annually) * (1 + (discount_rate_decimal / number_compounded_annually))
+
+    @staticmethod
+    def FV_Annuity_Due(payment, discount_rate_decimal, time_years, number_compounded_annually: int = 1):
+        return FinanceAnthology.FV_Annuity_Ordinary(payment, discount_rate_decimal, time_years, number_compounded_annually)* (1 + (discount_rate_decimal / number_compounded_annually))
+
+
+    #New Class Coming Soon
 class FinancialStatements:
     def __init__(self):
         pass
