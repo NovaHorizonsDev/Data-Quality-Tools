@@ -11,11 +11,11 @@ Current Data Methods : <br>
 
 
 5/12/2025: Update 1.22: The Finance Anthology Update: Capital Management Start:
-All Financial methods are static (no self reference)
+All Financial methods are static (no 'self' reference)
 <br>
 What's new: <br>
--NVv, Payback Period <br>
+-NPV, Payback Period, Profitability Index <br>
 Note: discount rate != -1 otherwise a divide by zero error is raised. 
 <br>
-
+Stay Tuned for a New Class:)
 

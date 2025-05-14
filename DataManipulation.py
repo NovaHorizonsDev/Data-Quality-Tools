@@ -120,25 +120,16 @@ class FinanceAnthology:
         pass
 
     @staticmethod
-    def PV(futureValue, discountRate=None, time = None):
-
-        if discountRate is None:
-            discountRate=.02
-        if time is None:
-            time=1
-        if discountRate == -1:
+    def PV(futureValue,  time_years, discountRate, number_compounded_annually: int = 1):
+        if discountRate == -1 or number_compounded_annually== 0:
            raise ZeroDivisionError("Discount Rate cannot be -1")
-        return (futureValue/ ((1+ discountRate) ** time))
+        return futureValue / ((1 + (discountRate / number_compounded_annually)) ** (time_years * number_compounded_annually))
 
     @staticmethod
-    def FV( presentValue, discountRate=None, time = None):
-        if discountRate is None:
-            discountRate=.02
-        if time is None:
-            time=1
-        if discountRate == -1 and time == 0:
+    def FV( presentValue, discountRate, time_years ,number_compounded_annually: int = 1):
+        if discountRate == -1 and (time_years == 0 or number_compounded_annually == 0):
             raise ArithmeticError("No FV, discount cannot be -1 and time cannot be 0 at the same time")
-        return presentValue * ((1+discountRate)**time)
+        return presentValue * ((1 + (discountRate / number_compounded_annually)) ** (time_years * number_compounded_annually))
 
     @staticmethod
     def SimpleDoubleTime( simple_interest_rate):
@@ -154,7 +145,7 @@ class FinanceAnthology:
     @staticmethod
     def GrossProfitMargin( netSales, COGS):
         if netSales == 0:
-            return ZeroDivisionError
+            raise ZeroDivisionError
         return (netSales - COGS)/netSales
 
     @staticmethod
@@ -192,13 +183,13 @@ class FinanceAnthology:
     @staticmethod
     def PremiumRequiredrateOfReturn( credit_premium, liquidity_premium, maturity_premium, inflation_rate=None, real_rate=None, Nominal_real_rate=None):
         if inflation_rate & real_rate & Nominal_real_rate is None:
-            return ArithmeticError("Inflation rate, Real rate, and Nominal Real Rate cannot be all None")
+            raise ArithmeticError("Inflation rate, Real rate, and Nominal Real Rate cannot be all None")
         elif inflation_rate & real_rate is None:
             return Nominal_real_rate+ maturity_premium+credit_premium+liquidity_premium
         elif Nominal_real_rate is None:
             return FinanceAnthology.NominalRealRate(inflation_rate, real_rate) +  maturity_premium+credit_premium+liquidity_premium
         else:
-            return ArithmeticError
+            raise ArithmeticError
 
     @staticmethod
     def AfterTaxCashFlows(beforeTaxCashFlows:list[float],taxRate_decimal):
@@ -210,7 +201,7 @@ class FinanceAnthology:
     @staticmethod
     def NPV( initial_investment, discount_rate, cashflows:list[float] ):
         if discount_rate == -1:
-            return ZeroDivisionError("Discount Rate cannot be -1")
+            raise ZeroDivisionError("Discount Rate cannot be -1")
         npv = -1 *initial_investment
         for i in range(len(cashflows)):
             npv += cashflows[i]/((1+discount_rate)**(i+1))
@@ -218,18 +209,20 @@ class FinanceAnthology:
 
     @staticmethod
     def PaybackPeriod(cashflows:list[float],initial_investment):
-        if initial_investment == 0:
-            return ZeroDivisionError("Initial Investment cannot be 0")
-        return (initial_investment/(1+cashflows[-1]))
+        years = 0
+        for i in range(len(cashflows)):
+            initial_investment = initial_investment - cashflows[i]
+            if initial_investment<=0:
+                return  years + (initial_investment + cashflows[i]) / cashflows[i]
+
+            years+=1
+        raise ValueError("PaybackPeriod cannot be Never")
 
     @staticmethod
     def ProfitabilityIndex(cashflows:list[float],initial_investment,discount_rate = None):
-        #Free Project?
-        if initial_investment == 0:
-            return ZeroDivisionError("Initial Investment cannot be 0")
-        #discount everything?
-        if discount_rate == -1:
-            return ZeroDivisionError("Discount Rate cannot be -1")
+        #Free Project? or discount everything?
+        if initial_investment == 0 or discount_rate == -1:
+            raise ZeroDivisionError("Initial Investment cannot be 0")
 
         #this step assumes cashflows are already PV
         if discount_rate is  None:
@@ -240,7 +233,7 @@ class FinanceAnthology:
             sumOfPVCashFlows += FinanceAnthology.PV(cashflows[i], discount_rate,i+1)
         return sumOfPVCashFlows/initial_investment
 
-
+#New Class Coming Soon
 class FinancialStatements:
     def __init__(self):
         pass
