@@ -10,12 +10,11 @@ Current Data Methods : <br>
 
 
 
-5/12/2025: Update 1.22: The Finance Anthology Update: Capital Management Start:
+5/16/2025: Update 1.221: The Finance Anthology Update: TVM Solver:
 All Financial methods are static (no 'self' reference)
 <br>
 What's new: <br>
--NPV, Payback Period, Profitability Index <br>
-Note: discount rate != -1 otherwise a divide by zero error is raised. 
+-FV and Pv simplified into general time value solver for: FV,PV, time, compounded per year (times compounded),interest.
 <br>
 Stay Tuned for a New Class:)
 

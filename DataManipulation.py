@@ -1,5 +1,6 @@
 import os
 import csv
+import math as mt
 
 
 
@@ -120,18 +121,6 @@ class FinanceAnthology:
         pass
 
     @staticmethod
-    def PV(futureValue,  time_years, discountRate, number_compounded_annually: int = 1):
-        if discountRate == -1 or number_compounded_annually== 0:
-           raise ZeroDivisionError("Discount Rate cannot be -1")
-        return futureValue / ((1 + (discountRate / number_compounded_annually)) ** (time_years * number_compounded_annually))
-
-    @staticmethod
-    def FV( presentValue, discountRate, time_years ,number_compounded_annually: int = 1):
-        if discountRate == -1 and (time_years == 0 or number_compounded_annually == 0):
-            raise ArithmeticError("No FV, discount cannot be -1 and time cannot be 0 at the same time")
-        return presentValue * ((1 + (discountRate / number_compounded_annually)) ** (time_years * number_compounded_annually))
-
-    @staticmethod
     def SimpleDoubleTime( simple_interest_rate):
 
         if simple_interest_rate ==0:
@@ -175,6 +164,22 @@ class FinanceAnthology:
     @staticmethod
     def ApproxNominalRealRate( inflation_rate, real_rate):
         return inflation_rate + real_rate
+
+    @staticmethod
+    def TimeValueSolver(FV=None, PV=None, discount_rate_EAR=None, time=None, compounded_per_year=None):
+        if discount_rate_EAR is None and ( time not in  [0,None] )and (PV not in [0,None]) and (FV is not None) :
+            return round((  compounded_per_year * ((FV/PV)**(1/time) -1)  ) ,2)
+        elif FV is None and( PV is not None) and( (discount_rate_EAR, time) not in [(-1,0),(None,None),(None,time),(discount_rate_EAR,None)]):
+            return round((PV*((1+ (discount_rate_EAR/compounded_per_year))**(time/compounded_per_year))) ,2)
+        elif PV is None and ((discount_rate_EAR, time) not in [(-1,0),(None,None),(None,time),(discount_rate_EAR,None)] )and (FV is not None or 0):
+            return round( FV/((1+(discount_rate_EAR/compounded_per_year))**(time/compounded_per_year) ),2)
+        elif time is None and (PV is not None or 0) and (FV is not None or 0) and (FV/PV >0) and(discount_rate_EAR is not None or -1) and (compounded_per_year is not None or 0):
+            return round(  (mt.log(FV/PV,(1+discount_rate_EAR)))/compounded_per_year ,5)
+        elif compounded_per_year is None and (PV is not None or 0) and (FV is not None or 0) and (FV/PV >0) and(discount_rate_EAR is not None or -1)and (time is not None or 0):
+            return round( (mt.log(FV/PV,(1+discount_rate_EAR)))/time ,0)
+        else:
+            raise ArithmeticError
+
 
     @staticmethod
     def NominalRealRate( inflation_rate, real_rate):
@@ -232,6 +237,11 @@ class FinanceAnthology:
         for i in range(len(cashflows)):
             sumOfPVCashFlows += FinanceAnthology.PV(cashflows[i], discount_rate,i+1)
         return sumOfPVCashFlows/initial_investment
+    @staticmethod
+    def EffectiveAnnualRate(interest_rate_decimal, times_compounded_annually):
+        if times_compounded_annually == 0:
+            raise ZeroDivisionError("Effective Annual Rate cannot be 0")
+        return round(((1+(interest_rate_decimal/times_compounded_annually))**times_compounded_annually)  -1,6)
 
 
     @staticmethod
