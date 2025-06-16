@@ -263,6 +263,56 @@ class FinanceAnthology:
     def FV_Annuity_Due(payment, discount_rate_decimal, time_years, number_compounded_annually: int = 1):
         return FinanceAnthology.FV_Annuity_Ordinary(payment, discount_rate_decimal, time_years, number_compounded_annually)* (1 + (discount_rate_decimal / number_compounded_annually))
 
+class Ratio_ed:
+    def __init__(self) -> None:
+
+     @staticmethod
+     def acid_test(current_assets, inventories, current_liabilities):
+        try:
+            return (current_assets-inventories)/current_liabilities
+        except:
+            return Exception
+
+    @staticmethod
+    def cash_ratio(cash_and_equivalents, current_liabilities ):
+        try:
+            return cash_and_equivalents/current_liabilities
+        except:
+            return Exception
+
+    @staticmethod
+    def current_ratio(current_assets, current_liabilities):
+        try:
+            return current_assets / current_liabilities
+        except:
+            return Exception
+
+    @staticmethod
+    def debt_ratio(total_assets, total_liabilities):
+        try:
+            return total_liabilities/total_assets
+        except:
+            return Exception
+
+    @staticmethod
+    def debt_equity_ratio(shareholder_equity, total_liabilities):
+        try:
+            return total_liabilities/shareholder_equity
+        except:
+            return Exception
+
+    @staticmethod
+    def bundle_of_liquidity(current_assets, current_liabilities, inventories, cash_and_equivalents):
+        try:
+            return[Ratio_ed.acid_test(current_assets,inventories,current_liabilities), Ratio_ed.cash_ratio(cash_and_equivalents,current_liabilities), Ratio_ed.current_ratio(current_assets,current_liabilities)]
+        except:
+            return Exception
+
+
+
+
+
+
 
     #New Class Coming Soon
 class FinancialStatements:
