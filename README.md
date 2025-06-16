@@ -25,7 +25,15 @@ deleteEmptyElementRows() – Removes any rows that contain missing (empty) entri
 Supported file types: .csv
 Note: While .xls and .xlsx are checked, they are not yet supported for reading/writing.
 
-2. FinanceAnthology
+
+2.) Ratio_ed: 
+A class full of accounting and financial ratios
+*see class for uptodate ratios
+
+
+
+
+3. FinanceAnthology
 A static-method-based class containing formulas used in corporate finance, valuation, and time value of money.
 
 Highlights:
