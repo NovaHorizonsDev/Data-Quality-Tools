@@ -1,6 +1,12 @@
 Finance & Data Cleaning Toolkit<br>
 This Python module provides a set of tools for handling financial analysis and data preprocessing, especially focused on identifying and processing missing elements in CSV files, and computing core corporate finance formulas. Designed for students, analysts, or developers working with finance datasets or time value of money problems.
 
+
+NEW UPDATE: Ratio_ed: 
+Integrate common liquidity, leverage, and other catagories (future update) ratios in you workflow! Try as well the preprogrammed informatrion getters to get all ratios at once! (more ratios and preprogrammed getters in future updates)
+
+
+
 Project Structure
 The module is organized into three main classes:
 
