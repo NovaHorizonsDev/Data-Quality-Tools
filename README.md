@@ -1,3 +1,5 @@
+*As of June 17th: This project is no longer open source and is under copyright*
+
 Finance & Data Cleaning Toolkit<br>
 This Python module provides a set of tools for handling financial analysis and data preprocessing, especially focused on identifying and processing missing elements in CSV files, and computing core corporate finance formulas. Designed for students, analysts, or developers working with finance datasets or time value of money problems.
 
