@@ -166,7 +166,7 @@ class FinanceAnthology:
         return inflation_rate + real_rate
 
     @staticmethod
-    def TimeValueSolver(FV=None, PV=None, discount_rate_EAR=None, time=None, compounded_per_year=None):
+    def TimeValueSolver(FV=None, PV=None, discount_rate_EAR=None, time=None, compounded_per_year=None): #need to include payments
         if discount_rate_EAR is None and ( time not in  [0,None] )and (PV not in [0,None]) and (FV is not None) :
             return round((  compounded_per_year * ((FV/PV)**(1/time) -1)  ) ,2)
         elif FV is None and( PV is not None) and( (discount_rate_EAR, time) not in [(-1,0),(None,None),(None,time),(discount_rate_EAR,None)]):
